@@ -33,7 +33,7 @@ def createNodes(f, path_base):
             for row in reader:
                 idx = row[0]
                 val = row[1]
-                stmt = f"CREATE ({node.lower()}_{idx}:{node} {{ {attr} : \"{val}\" }});"    
+                stmt = f"CREATE ({node.lower()}_{idx}:{node} {{ {attr} : \"{val}\", id : {idx} }});"    
                 f.write(stmt)
                 f.write("\n")
             f.write("\n")
@@ -59,7 +59,12 @@ def createRelations(f, path_base):
                 node1 = f"{between[0].lower()}_{row[0]}"
                 node2 = f"{between[1].lower()}_{row[1]}"
 
-                stmt = f"CREATE ({node1})-[{rel.lower()}_{i}:{rel}]->({node2});"    
+                node1_type = between[0]
+                node2_type = between[1]
+                node1_id = row[0]
+                node2_id = row[1]
+
+                stmt = f"MATCH (a:{node1_type}), (b:{node2_type}) WHERE a.id = {node1_id} AND b.id = {node2_id} CREATE (a)-[{rel.lower()}_{i}:{rel}]->(b);"    
                 f.write(stmt)
                 f.write("\n")
             f.write("\n")
