@@ -46,3 +46,13 @@ return distinct su.name;
 match (s:User{name : "Jessica"}), (t:User), p = shortestPath((s)-[:FOLLOWS*]->(t))
 where t.name <> "Jessica" 
 return p;
+
+// Longest paths from a node to all other nodes without repetitions
+match p = (s:User)-[:FOLLOWS*]->(t:User)
+where s.name = "Jessica" and t.name <> "Jessica" 
+with p, length(p) as lp, reduce(l = [], n in nodes(p) | l + n.name) as names
+unwind names as unames
+with p, lp, collect(distinct unames) as dnames
+with p, lp, size(dnames) as dlp 
+where lp = dlp
+return dlp order by dlp desc limit 1;
