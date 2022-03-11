@@ -2,8 +2,9 @@
 
 match p = (s:User)-[:FOLLOWS*]->(t:User)
 where s.name = "Jessica" and t.name <> "Jessica" 
-with reduce(l = [], n in nodes(p) | l + n.name) as names
+with p, length(p) as lp, reduce(l = [], n in nodes(p) | l + n.name) as names
 unwind names as unames
-with collect(distinct unames) as dnames
-with size(dnames) as lp 
-return lp order by lp desc limit 1;
+with p, lp, collect(distinct unames) as dnames
+with p, lp, size(dnames) as dlp 
+where lp = dlp
+return dlp order by dlp desc limit 1;
