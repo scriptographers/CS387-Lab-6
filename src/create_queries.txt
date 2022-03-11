@@ -1,3 +1,5 @@
+MATCH (n) DETACH DELETE n;
+
 CREATE (hashtag_1:Hashtag { tag : "run", id : 1 });
 CREATE (hashtag_2:Hashtag { tag : "lyft", id : 2 });
 CREATE (hashtag_3:Hashtag { tag : "disapointed", id : 3 });

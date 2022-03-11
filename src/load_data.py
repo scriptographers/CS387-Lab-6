@@ -64,9 +64,8 @@ def createRelations(f, path_base):
                 node1_id = row[0]
                 node2_id = row[1]
 
-                stmt = f"MATCH (a:{node1_type}), (b:{node2_type}) WHERE a.id = {node1_id} AND b.id = {node2_id} CREATE (a)-[{rel.lower()}_{i}:{rel}]->(b);"    
+                stmt = f"MATCH (a:{node1_type}), (b:{node2_type}) WHERE a.id = {node1_id} AND b.id = {node2_id} CREATE (a)-[{rel.lower()}_{i}:{rel}]->(b);\n"    
                 f.write(stmt)
-                f.write("\n")
             f.write("\n")
         f.write("\n")
 
@@ -76,5 +75,9 @@ if __name__ == "__main__":
     path_create_queries = "create_queries.txt"
 
     with open(path_create_queries, "w+") as f:
+
+        # Delete all nodes/relationships present
+        f.write("MATCH (n) DETACH DELETE n;\n\n")
+
         createNodes(f, path_data)
         createRelations(f, path_data)
