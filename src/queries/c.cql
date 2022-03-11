@@ -5,4 +5,4 @@ with count(*) as jc
 match (su1:User)-[:FOLLOWS]->(su2:User)
 with su2, count(su1) as cu, jc
 where cu > jc
-return su2;
+return su2.name;

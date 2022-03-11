@@ -5,4 +5,4 @@ with t, collect(h.id) as hids
 with t, size(hids) as nh
 order by nh desc
 limit 1
-return t, nh;
+return t.text, nh;

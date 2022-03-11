@@ -4,4 +4,4 @@ match (su1:User)-[:FOLLOWS]->(su2:User)
 with su2, count(su1) as cu
 order by cu asc
 limit 5
-return su2, cu;
+return su2.name, cu;
