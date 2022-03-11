@@ -16,6 +16,12 @@ RELS = {
     "FOLLOWS" : {"csv" : "follows", "between" : ("User", "User")}
 }
 
+ID2VAL = {
+    "User" : {},
+    "Tweet" : {},
+    "Hashtag" : {}
+}
+
 def createNodes(f, path_base):
     
     for node in sorted(NODES.keys()):
@@ -31,9 +37,10 @@ def createNodes(f, path_base):
 
             values = []
             for row in reader:
-                idx = row[0]
+                idx = int(row[0])
                 val = row[1]
-                stmt = f"CREATE ({node.lower()}_{idx}:{node} {{ {attr} : \"{val}\", id : {idx} }});"    
+                ID2VAL[node][idx] = val
+                stmt = f"CREATE ({node.lower()}_{idx}:{node} {{ {attr} : \"{val}\" }});"    
                 f.write(stmt)
                 f.write("\n")
             f.write("\n")
@@ -56,22 +63,27 @@ def createRelations(f, path_base):
             values = []
             for i, row in enumerate(reader):
 
-                node1 = f"{between[0].lower()}_{row[0]}"
-                node2 = f"{between[1].lower()}_{row[1]}"
+                node1 = between[0]
+                node2 = between[1]
+                
+                node1_id = int(row[0])
+                node2_id = int(row[1])
 
-                node1_type = between[0]
-                node2_type = between[1]
-                node1_id = row[0]
-                node2_id = row[1]
+                node1_val = ID2VAL[node1][node1_id]
+                node2_val = ID2VAL[node2][node2_id]
 
-                stmt = f"MATCH (a:{node1_type}), (b:{node2_type}) WHERE a.id = {node1_id} AND b.id = {node2_id} CREATE (a)-[{rel.lower()}_{i}:{rel}]->(b);\n"    
+                node1_attr = NODES[node1]["attr"]
+                node2_attr = NODES[node2]["attr"]
+
+                stmt = f"MATCH (a:{node1}), (b:{node2}) WHERE a.{node1_attr} = \"{node1_val}\" AND b.{node2_attr} = \"{node2_val}\" CREATE (a)-[{rel.lower()}_{i}:{rel}]->(b);\n"    
                 f.write(stmt)
+            
             f.write("\n")
         f.write("\n")
 
 if __name__ == "__main__":
 
-    path_data = "data"
+    path_data = "."
     path_create_queries = "create_queries.txt"
 
     with open(path_create_queries, "w+") as f:
