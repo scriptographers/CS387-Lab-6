@@ -12,4 +12,4 @@ call{
     match (u:User) where not u.name in dhf
     return u.name as users, 0 as cnt
 }
-return users, cnt order by cnt limit 5;
+return users, cnt order by cnt asc, users asc limit 5;
