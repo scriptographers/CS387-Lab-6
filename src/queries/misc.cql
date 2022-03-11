@@ -31,11 +31,11 @@ with [(u:User)-[:SENT]->(t:Tweet)-[:CONTAINS]->(h:Hashtag) where u.name = "Thoma
 match (st:Tweet)-[:CONTAINS]->(sh:Hashtag) where sh.tag in hlist
 return st;
 
-// Total number of times a tweet was tweeted by a distinct user
+// Total number of times a tweet was tweeted by a distinct user and the users who tweeted it
 match (u:User)-[:SENT]->(t:Tweet) 
-with t, count(u) as nt
-order by nt desc
-return t, nt;
+with t, count(distinct u) as nu, collect(distinct u) as us
+order by nu desc
+return t, nu, us;
 
 // All users mentioned by Thomas in his tweets
 with [(u:User)-[:SENT]->(t:Tweet) where u.name = "Thomas" | t.text] as tlist
