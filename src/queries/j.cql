@@ -1,0 +1,1 @@
+// Return all distinct user name A and tweet text T, where any followers of A is mentioned in T which is posted by a 3rd level follower and T contains a hashtag of > 15 characters

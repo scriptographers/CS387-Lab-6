@@ -42,3 +42,7 @@ with [(u:User)-[:SENT]->(t:Tweet) where u.name = "Thomas" | t.text] as tlist
 match (st:Tweet)-[:MENTIONS]->(su:User) where st.text in tlist
 return distinct su.name;
 
+// Shortest path between Jessica and all other users
+match (s:User{name : "Jessica"}), (t:User), p = shortestPath((s)-[:FOLLOWS*]->(t))
+where t.name <> "Jessica" 
+return p;
