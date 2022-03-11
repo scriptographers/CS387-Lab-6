@@ -2,4 +2,4 @@
 
 match p = shortestPath((s:User {name: "Jessica"})-[:FOLLOWS*]->(t:User))
 where t.name <> "Jessica" 
-return max(length(p));
+return max(length(p)) as hops;
