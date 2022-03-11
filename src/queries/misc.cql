@@ -37,4 +37,8 @@ with t, count(u) as nt
 order by nt desc
 return t, nt;
 
+// All users mentioned by Thomas in his tweets
+with [(u:User)-[:SENT]->(t:Tweet) where u.name = "Thomas" | t.text] as tlist
+match (st:Tweet)-[:MENTIONS]->(su:User) where st.text in tlist
+return distinct su.name;
 
