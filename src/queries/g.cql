@@ -1,3 +1,5 @@
-// Count the number of tweets contains regex “run” , ex #run, running, runs etc
+// Count the number of tweets CONTAINS regex “run” , ex #run, running, runs etc
 
-match (t:Tweet) where  t.text contains "run" return count(t);
+MATCH (t:Tweet)
+WHERE t.text CONTAINS "run"
+RETURN count(t);

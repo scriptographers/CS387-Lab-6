@@ -4,4 +4,4 @@ WITH [(u:User)<-[:FOLLOWS*3]-(u3:User)-[:SENT]->(t:Tweet)-[:CONTAINS ]->(h:Hasht
 WHERE size(h.tag) > 15 | [u.name, t.text] ] AS temp
 MATCH (t:Tweet)-[:MENTIONS]->(u2:User)-[:FOLLOWS]->(u:User)
 WHERE [u.name, t.text] IN temp
-RETURN u.name, t.text
+RETURN DISTINCT u.name, t.text

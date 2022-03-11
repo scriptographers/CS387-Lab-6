@@ -1,7 +1,10 @@
-// Delete all users mentioned in a tweet by ‘Thomas’. 
+// Delete all users mentioned in a tweet by ‘Thomas’.
 // Note: This should also delete all relationships of mentioned users (cascade delete)
 
-with [(u:User)-[:SENT]->(t:Tweet) where u.name = "Thomas" | t.text] as tlist
-with [(st:Tweet)-[:MENTIONS]->(su:User) where st.text in tlist | su.name] as ulist
-match (ssu:User) where ssu.name in ulist
-detach delete ssu;
+WITH [(u:User)-[:SENT]->(t:Tweet)
+WHERE u.name = "Thomas" | t.text] AS tlist
+WITH [(st:Tweet)-[:MENTIONS]->(su:User)
+WHERE st.text IN tlist | su.name] AS ulist
+MATCH (ssu:User)
+WHERE ssu.name IN ulist
+DETACH DELETE ssu;

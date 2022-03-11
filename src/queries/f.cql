@@ -1,3 +1,5 @@
 // Tweets that start with ‘we’ and contain the hashtag ‘proud’
 
-match (t:Tweet) where t.text starts with "we" and t.text contains "#proud" return t.text;
+MATCH (t:Tweet)
+WHERE t.text STARTS WITH "we" AND t.text CONTAINS "#proud"
+RETURN t.text;
